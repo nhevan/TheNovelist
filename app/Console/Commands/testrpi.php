@@ -13,7 +13,7 @@ class testrpi extends Command
      *
      * @var string
      */
-    protected $signature = 'testrpi';
+    protected $signature = 'testrpi {x} {y}';
 
     /**
      * The console command description.
@@ -40,15 +40,9 @@ class testrpi extends Command
     public function handle()
     {
         echo "Testing RPi using piphp/gpio";
-        // Create a GPIO object
-        $gpio = new GPIO();
-
-        // Retrieve pin 18 and configure it as an output pin
-        $pin = $gpio->getOutputPin(18);
-
-        // Set the value of the pin high (turn it on)
-        $pin->setValue(PinInterface::VALUE_HIGH);
-        usleep(2000000); // sleep for 2 seconds
-        $pin->setValue(PinInterface::VALUE_LOW);
+        $x = $this->argument('x');
+        $y = $this->argument('y');
+        $product = $x * $y;
+        echo "product is {$product}";
     }
 }
