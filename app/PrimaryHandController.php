@@ -68,6 +68,17 @@ class PrimaryHandController
 		}
 	}
 
+	public function rotateAntiClockwise()
+	{
+		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
+			$this->setStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
+			$this->current_phase += 1;
+			if($this->current_phase > 7)
+				$this->current_phase = 0;
+			usleep($this->delay);
+		}
+	}
+
     /**
      * @return mixed
      */

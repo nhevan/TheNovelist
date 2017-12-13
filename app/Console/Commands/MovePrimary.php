@@ -39,15 +39,17 @@ class MovePrimary extends Command
      */
     public function handle()
     {
-        // $calculator = new AngleCalculator();
+        $calculator = new AngleCalculator();
         
-        // $calculator->setPrimaryHandLength(17.5);
-        // $calculator->setSecondaryHandLength(15.5);
-        // $calculator->setPoint($this->argument('x'), $this->argument('y'));
+        $calculator->setPrimaryHandLength(18.5);
+        $calculator->setSecondaryHandLength(15.5);
+        $calculator->setPoint($this->argument('x'), $this->argument('y'));
 
-        // echo $calculator->getPrimaryHandAngle();
+        $angle_to_rotate = $calculator->getPrimaryHandAngle();
+        $steps_to_move = floor($angle_to_rotate / .087891);
+
         $primaryHandMover = new PrimaryHandController;
-        $primaryHandMover->setStepsToMove(512);
+        $primaryHandMover->setStepsToMove($steps_to_move);
         $primaryHandMover->rotateClockwise();
     }
 }
