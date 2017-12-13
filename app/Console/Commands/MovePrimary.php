@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\AngleCalculator;
+use App\PrimaryHandController;
 use Illuminate\Console\Command;
 
 class MovePrimary extends Command
@@ -38,12 +39,15 @@ class MovePrimary extends Command
      */
     public function handle()
     {
-        $calculator = new AngleCalculator();
+        // $calculator = new AngleCalculator();
         
-        $calculator->setPrimaryHandLength(17.5);
-        $calculator->setSecondaryHandLength(15.5);
-        $calculator->setPoint($this->argument('x'), $this->argument('y'));
+        // $calculator->setPrimaryHandLength(17.5);
+        // $calculator->setSecondaryHandLength(15.5);
+        // $calculator->setPoint($this->argument('x'), $this->argument('y'));
 
-        echo $calculator->getPrimaryHandAngle();
+        // echo $calculator->getPrimaryHandAngle();
+        $primaryHandMover = new PrimaryHandController;
+        $primaryHandMover->setStepsToMove(512);
+        $primaryHandMover->rotateClockwise();
     }
 }
