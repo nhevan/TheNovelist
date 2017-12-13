@@ -51,10 +51,10 @@ class PrimaryHandController
 
 	public function setStep($w1, $w2, $w3, $w4)
 	{
-		$input_1->setValue($w1);
-		$input_2->setValue($w2);
-		$input_3->setValue($w3);
-		$input_4->setValue($w4);
+		$this->input_1->setValue($w1);
+		$this->input_2->setValue($w2);
+		$this->input_3->setValue($w3);
+		$this->input_4->setValue($w4);
 	}
 
 	public function rotateClockwise()
