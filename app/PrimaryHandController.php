@@ -8,6 +8,7 @@ use PiPHP\GPIO\Pin\PinInterface;
 class PrimaryHandController
 {
 	protected $gpio;
+	protected $motor_switch;
     protected $input_1; // orange
 	protected $input_2; // yellow
 	protected $input_3; // pink
@@ -43,6 +44,7 @@ class PrimaryHandController
 
 	public function setupPins()
 	{
+		$this->motor_switch = $this->gpio->getOutputPin(18);
 		$this->input_1 = $this->gpio->getOutputPin(17);
 		$this->input_2 = $this->gpio->getOutputPin(24);
 		$this->input_3 = $this->gpio->getOutputPin(4);
@@ -59,6 +61,7 @@ class PrimaryHandController
 
 	public function rotateClockwise()
 	{
+		$this->turnOnMotor();
 		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
 			$this->setStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
 			$this->current_phase -= 1;
@@ -66,10 +69,12 @@ class PrimaryHandController
 				$this->current_phase = 7;
 			usleep($this->delay);
 		}
+		$this->turnOffMotor();
 	}
 
 	public function rotateAntiClockwise()
 	{
+		$this->turnOnMotor();
 		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
 			$this->setStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
 			$this->current_phase += 1;
@@ -77,6 +82,7 @@ class PrimaryHandController
 				$this->current_phase = 0;
 			usleep($this->delay);
 		}
+		$this->turnOffMotor();
 	}
 
     /**
@@ -97,5 +103,25 @@ class PrimaryHandController
         $this->steps_to_move = $steps_to_move;
 
         return $this;
+    }
+
+    /**
+     * turns On the motor
+     * @return [type] [description]
+     */
+    public function turnOnMotor()
+    {
+    	echo "Turning On Motor";
+		$this->motor_switch->setValue(PinInterface::VALUE_HIGH);
+    }
+    
+    /**
+     * turns off the motor
+     * @return [type] [description]
+     */
+    public function turnOffMotor()
+    {
+    	echo "Turning Off Motor";
+    	$this->motor_switch->setValue(PinInterface::VALUE_LOW);
     }
 }
