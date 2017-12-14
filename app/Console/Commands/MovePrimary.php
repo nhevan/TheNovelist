@@ -46,7 +46,9 @@ class MovePrimary extends Command
         $calculator->setPoint($this->argument('x'), $this->argument('y'));
 
         $angle_to_rotate = $calculator->getPrimaryHandAngle();
+        echo "Angle to rotate = {$angle_to_rotate}";
         $steps_to_move = floor($angle_to_rotate / .087891);
+        echo "Steps to move = {$steps_to_move}";
 
         $primaryHandMover = new PrimaryHandController;
         $primaryHandMover->setStepsToMove($steps_to_move);
