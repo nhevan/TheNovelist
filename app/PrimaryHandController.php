@@ -59,7 +59,7 @@ class PrimaryHandController
 		$this->input_4->setValue($w4);
 	}
 
-	public function rotateClockwise()
+	public function rotateAntiClockwise()
 	{
 		$this->turnOnMotor();
 		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
@@ -72,7 +72,7 @@ class PrimaryHandController
 		$this->turnOffMotor();
 	}
 
-	public function rotateAntiClockwise()
+	public function rotateClockwise()
 	{
 		$this->turnOnMotor();
 		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
