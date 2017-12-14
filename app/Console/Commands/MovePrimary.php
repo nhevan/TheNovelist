@@ -41,8 +41,8 @@ class MovePrimary extends Command
     {
         $calculator = new AngleCalculator();
         
-        $calculator->setPrimaryHandLength(18.5);
-        $calculator->setSecondaryHandLength(15.5);
+        $calculator->setPrimaryHandLength(19);
+        $calculator->setSecondaryHandLength(13.5);
         $calculator->setPoint($this->argument('x'), $this->argument('y'));
 
         $angle_to_rotate = $calculator->getPrimaryHandAngle();
@@ -52,6 +52,10 @@ class MovePrimary extends Command
 
         $primaryHandMover = new PrimaryHandController;
         $primaryHandMover->setStepsToMove($steps_to_move);
-        $primaryHandMover->rotateClockwise();
+        // if ($angle_to_rotate < 0) {
+        //     return $primaryHandMover->rotateClockwise();
+        // }
+
+        return $primaryHandMover->rotateAntiClockwise();
     }
 }
