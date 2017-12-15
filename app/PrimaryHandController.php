@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Setting;
 use PiPHP\GPIO\GPIO;
 use PiPHP\GPIO\Pin\PinInterface;
 
 class PrimaryHandController
 {
 	protected $gpio;
+	protected $settings;
 	protected $motor_switch;
     protected $input_1; // orange
 	protected $input_2; // yellow
@@ -23,10 +25,14 @@ class PrimaryHandController
 	public function __construct()
 	{
 		$this->gpio = new GPIO();
+		$this->settings = new Setting;
 		$this->phase_sequence = $this->setPhaseSequences();
 		$this->setupPins();
 	}
 
+	/**
+	 * prepares the set sequence for the stepper motor 28BYJ48
+	 */
 	public function setPhaseSequences()
 	{
 		$phase_sequence = [];
@@ -42,6 +48,10 @@ class PrimaryHandController
 		return $phase_sequence;
 	}
 
+	/**
+	 * sets up all the necessary pins required to control the motor
+	 * @return [type] [description]
+	 */
 	public function setupPins()
 	{
 		$this->motor_switch = $this->gpio->getOutputPin(18);
@@ -51,7 +61,15 @@ class PrimaryHandController
 		$this->input_4 = $this->gpio->getOutputPin(23);
 	}
 
-	public function setStep($w1, $w2, $w3, $w4)
+	/**
+	 * moves the motor by 1 step as per given values
+	 * @param  [type] $w1 [description]
+	 * @param  [type] $w2 [description]
+	 * @param  [type] $w3 [description]
+	 * @param  [type] $w4 [description]
+	 * @return [type]     [description]
+	 */
+	public function moveStep($w1, $w2, $w3, $w4)
 	{
 		$this->input_1->setValue($w1);
 		$this->input_2->setValue($w2);
@@ -59,29 +77,39 @@ class PrimaryHandController
 		$this->input_4->setValue($w4);
 	}
 
+	/**
+	 * rotates the motor clock wise
+	 * @return [type] [description]
+	 */
 	public function rotateClockwise()
 	{
 		$this->turnOnMotor();
 		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
-			$this->setStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
+			$this->moveStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
 			$this->current_phase -= 1;
 			if($this->current_phase < 0)
 				$this->current_phase = 7;
 			usleep($this->delay);
 		}
+		$this->settings->track('primary_hand', -1 * $this->getStepsToMove()); // clockwise step is considered as a negative step
 		$this->turnOffMotor();
 	}
 
+	/**
+	 * rotates the motor anti clock wise
+	 * @return [type] [description]
+	 */
 	public function rotateAntiClockwise()
 	{
 		$this->turnOnMotor();
 		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
-			$this->setStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
+			$this->moveStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
 			$this->current_phase += 1;
 			if($this->current_phase > 7)
 				$this->current_phase = 0;
 			usleep($this->delay);
 		}
+		$this->settings->track('primary_hand', $this->getStepsToMove()); // anti clockwise step is considered as a positive step
 		$this->turnOffMotor();
 	}
 

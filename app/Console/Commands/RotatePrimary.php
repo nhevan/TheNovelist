@@ -2,11 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Setting;
 use App\PrimaryHandController;
 use Illuminate\Console\Command;
 
 class RotatePrimary extends Command
 {
+    protected $settings;
     /**
      * The name and signature of the console command.
      *
@@ -29,6 +31,8 @@ class RotatePrimary extends Command
     public function __construct()
     {
         parent::__construct();
+
+        $this->settings = new Setting;
     }
 
     /**
@@ -45,8 +49,14 @@ class RotatePrimary extends Command
         $primaryHandMover->setStepsToMove($steps_to_move);
 
         if($this->option('cw')){
-            return $primaryHandMover->rotateClockwise();
+            $primaryHandMover->rotateClockwise();
+            $this->settings->reset('primary_hand');
+            return 0;
         }
-        return $primaryHandMover->rotateAntiClockwise();
+
+        $primaryHandMover->rotateAntiClockwise();
+        $this->settings->reset('primary_hand');
+
+        return 0;
     }
 }

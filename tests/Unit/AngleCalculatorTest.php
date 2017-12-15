@@ -184,6 +184,6 @@ class AngleCalculatorTest extends TestCase
     	$angle = $this->calculator->getPrimaryHandAngle();
     
         //assert
-        $this->assertEquals(15, round($angle));
+        $this->assertEquals(15, abs(round($angle)));
     }
 }
