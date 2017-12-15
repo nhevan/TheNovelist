@@ -43,4 +43,18 @@ class SettingsTest extends TestCase
 			'value' => 50
 		]);
 	}
+
+	/**
+	 * @test
+	 * it can reset the step count for any hand
+	 */
+	public function it_can_reset_the_step_count_for_any_hand()
+	{
+		$this->settings->track('primary_hand', 50);
+		$this->settings->reset('primary_hand');
+		$this->assertDatabaseHas('settings', [
+			'key' => 'primary_hand_current_step_count',
+			'value' => 0
+		]);
+	}
 }
