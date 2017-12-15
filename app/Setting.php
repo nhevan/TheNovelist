@@ -32,4 +32,16 @@ class Setting extends Model
 
     	$hand->save();
     }
+
+    /**
+     * returns the current angle of the given hand made between the x axis
+     * @param  [type] $hand [description]
+     * @return [type]       [description]
+     */
+    public function getCurrentHandAngle($hand)
+    {
+        $hand = $this->where('key', $hand.'_current_step_count')->first();
+
+        return $hand->value * .087891;
+    }
 }

@@ -57,4 +57,20 @@ class SettingsTest extends TestCase
 			'value' => 0
 		]);
 	}
+
+	/**
+	 * @test
+	 * it can return the current angle between the primary hand and x axis
+	 */
+	public function it_can_return_the_current_angle_between_the_primary_hand_and_x_axis()
+	{
+		//arrange
+	    $this->settings->track('primary_hand', 512);
+	
+	    //act
+		$current_primary_hand_angle = $this->settings->getCurrentHandAngle('primary_hand');
+	
+	    //assert
+	    $this->assertEquals(45, round($current_primary_hand_angle));
+	}
 }
