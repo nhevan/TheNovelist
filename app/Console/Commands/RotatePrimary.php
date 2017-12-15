@@ -2,11 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Setting;
 use App\PrimaryHandController;
 use Illuminate\Console\Command;
 
 class RotatePrimary extends Command
 {
+    protected $settings;
     /**
      * The name and signature of the console command.
      *
@@ -29,6 +31,8 @@ class RotatePrimary extends Command
     public function __construct()
     {
         parent::__construct();
+
+        $this->settings = new Setting;
     }
 
     /**
