@@ -51,7 +51,8 @@ class MovePrimary extends Command
         $current_hand_angle = $settings->getCurrentHandAngle('primary_hand');
         $angle_to_rotate = $current_hand_angle - $target_angle;
 
-        $steps_to_move = floor($angle_to_rotate / .087891);
+        $steps_to_move = $angle_to_rotate / .087891;
+        $steps_to_move = floor($steps_to_move);
 
         echo "Current angle = {$current_hand_angle}";
         echo "Angle to rotate = {$angle_to_rotate}";
