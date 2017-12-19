@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Setting;
-use App\PrimaryHandController;
 use Illuminate\Console\Command;
+use App\SecondaryHandController;
 
-class RotatePrimary extends Command
+class RotateSecondary extends Command
 {
     protected $settings;
     /**
@@ -14,14 +14,14 @@ class RotatePrimary extends Command
      *
      * @var string
      */
-    protected $signature = 'RotatePrimary {angle} {--cw}';
+    protected $signature = 'RotateSecondary {angle} {--cw}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Rotates the primary hand to given angle.';
+    protected $description = 'Rotates the secondary hand to given angle.';
 
     /**
      * Create a new command instance.
@@ -42,21 +42,21 @@ class RotatePrimary extends Command
      */
     public function handle()
     {
-        $primaryHandMover = new PrimaryHandController;
+        $secondaryHandMover = new SecondaryHandController;
         $angle = $this->argument('angle');
 
         $steps_to_move =  abs($angle / .087891);
         $steps_to_move = floor($steps_to_move);
-        $primaryHandMover->setStepsToMove($steps_to_move);
+        $secondaryHandMover->setStepsToMove($steps_to_move);
 
         if($this->option('cw')){
-            $primaryHandMover->rotateClockwise();
-            $this->settings->reset('primary_hand');
+            $secondaryHandMover->rotateClockwise();
+            $this->settings->reset('secondary_hand');
             return 0;
         }
 
-        $primaryHandMover->rotateAntiClockwise();
-        $this->settings->reset('primary_hand');
+        $secondaryHandMover->rotateAntiClockwise();
+        $this->settings->reset('secondary_hand');
 
         return 0;
     }

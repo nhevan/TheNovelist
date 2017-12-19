@@ -147,4 +147,35 @@ class AngleCalculator
     {
     	return $this->getTargetToXAxisAngle() - $this->getTargetToPrimaryAngle();
     }
+
+    /**
+     * returns the angle between primary hand and the height of the triangle
+     * @return [type] [description]
+     */
+    public function getPrimaryToHeightAngle()
+    {
+        return 90 - $this->getTargetToPrimaryAngle();
+    }
+
+    /**
+     * returns the angle between the secondary hand and the height of the triangle
+     * @return [type] [description]
+     */
+    public function getSecondaryToHeightAngle()
+    {
+        $h = $this->getSecondaryHandLength();
+        $b = $this->getTriangleHeight();
+        $ratio = $b / $h;
+
+        return rad2deg(acos($ratio));
+    }
+
+    /**
+     * returns the angle between the secondary hand and the arbitrary y axis situated at the endpoint of the primary hand
+     * @return [type] [description]
+     */
+    public function getSecondaryHandAngle()
+    {
+        return $this->getPrimaryToHeightAngle() + $this->getSecondaryToHeightAngle() - 90;
+    }
 }
