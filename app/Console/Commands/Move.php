@@ -46,8 +46,8 @@ class Move extends Command
         $calculator = new AngleCalculator();
         $settings = new Setting();
         
-        $calculator->setPrimaryHandLength(14.75);
-        $calculator->setSecondaryHandLength(15.5);
+        $calculator->setPrimaryHandLength(15);
+        $calculator->setSecondaryHandLength(10);
         $calculator->setPoint($this->argument('x'), $this->argument('y'));
 
         $target_primary_angle = $calculator->getPrimaryHandAngle();
@@ -62,11 +62,14 @@ class Move extends Command
         $steps_to_move_secondary_hand = $angle_to_rotate_secondary_hand / .087891;
         $steps_to_move_secondary_hand = floor($steps_to_move_secondary_hand);
 
-        echo "Current angle = {$current_secondary_hand_angle}";
-        echo "Angle to rotate = {$angle_to_rotate_secondary_hand}";
-        echo "Steps to move = {$steps_to_move_secondary_hand}";
+        echo "Current Primary Hand angle = {$current_secondary_hand_angle}";
+        echo "Angle to rotate Primary Hand = {$angle_to_rotate_secondary_hand}";
+        echo "Steps to move Primary Hand = {$steps_to_move_secondary_hand}";
 
-        
+        echo "Current Secondary Hand angle = {$current_secondary_hand_angle}";
+        echo "Angle to rotate Secondary Hand = {$angle_to_rotate_secondary_hand}";
+        echo "Steps to move Secondary Hand = {$steps_to_move_secondary_hand}";
+
         $primaryHandMover->setStepsToMove(abs($steps_to_move_primary_hand));
         if ($angle_to_rotate_primary_hand > 0) {
             $primaryHandMover->rotateClockwise();
@@ -76,10 +79,9 @@ class Move extends Command
 
         $secondaryHandMover->setStepsToMove(abs($steps_to_move_secondary_hand));
         if ($angle_to_rotate_secondary_hand > 0) {
-            $secondaryHandMover->rotateClockwise();
-        }else{
             $secondaryHandMover->rotateAntiClockwise();
+        }else{
+            $secondaryHandMover->rotateClockwise();
         }
-
     }
 }

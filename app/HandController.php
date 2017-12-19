@@ -62,7 +62,7 @@ abstract class HandController
      */
     protected function turnOnMotor()
     {
-    	echo "Turning On Motor";
+    	// echo "Turning On Motor";
 		$this->motor_switch->setValue(PinInterface::VALUE_HIGH);
     }
     
@@ -72,7 +72,7 @@ abstract class HandController
      */
     protected function turnOffMotor()
     {
-    	echo "Turning Off Motor";
+    	// echo "Turning Off Motor";
     	$this->motor_switch->setValue(PinInterface::VALUE_LOW);
     }
 

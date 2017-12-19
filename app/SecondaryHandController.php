@@ -24,7 +24,7 @@ class SecondaryHandController extends HandController
 	public function rotateClockwise()
 	{
 		parent::rotateClockwise();
-		$this->settings->track('secondary_hand', -1 * $this->getStepsToMove()); // clockwise step is considered as a negative step
+		$this->settings->track('secondary_hand', $this->getStepsToMove()); // clockwise step is considered as a negative step
 	}
 
 	/**
@@ -34,6 +34,6 @@ class SecondaryHandController extends HandController
 	public function rotateAntiClockwise()
 	{
 		parent::rotateAntiClockwise();
-		$this->settings->track('secondary_hand', $this->getStepsToMove()); // anti clockwise step is considered as a positive step
+		$this->settings->track('secondary_hand', -1 * $this->getStepsToMove()); // anti clockwise step is considered as a positive step
 	}
 }
