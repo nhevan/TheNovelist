@@ -13,10 +13,10 @@ class PrimaryHandController extends HandController
 	protected function setupPins()
 	{
 		$this->motor_switch = $this->gpio->getOutputPin(18);
-		$this->input_1 = $this->gpio->getOutputPin(17);
-		$this->input_2 = $this->gpio->getOutputPin(24);
-		$this->input_3 = $this->gpio->getOutputPin(4);
-		$this->input_4 = $this->gpio->getOutputPin(23);
+		$this->input_1 = $this->gpio->getOutputPin(17); // this is input 2 in motor driver
+		$this->input_2 = $this->gpio->getOutputPin(24); // this is input 4 in motor driver
+		$this->input_3 = $this->gpio->getOutputPin(4); // this is input 1 in motor driver
+		$this->input_4 = $this->gpio->getOutputPin(23); // this is input 3 in motor driver
 	}
 
 	/**
