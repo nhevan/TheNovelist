@@ -186,4 +186,58 @@ class AngleCalculatorTest extends TestCase
         //assert
         $this->assertEquals(15, abs(round($angle)));
     }
+
+    /**
+     * @test
+     * it can find the angle between primary hand and the height of the triangle
+     */
+    public function it_can_find_the_angle_between_primary_hand_and_the_height_of_the_triangle()
+    {
+        //arrange
+        $this->calculator->setPrimaryHandLength(15);
+        $this->calculator->setSecondaryHandLength(15);
+        $this->calculator->setPoint(10.60660, 10.60660); // a point with a distance of 15cm from the origin
+    
+        //act
+        $angle = $this->calculator->getPrimaryToHeightAngle();
+    
+        //assert
+        $this->assertEquals(30, abs(round($angle)));
+    }
+
+    /**
+     * @test
+     * it can find the angle between secondary hand and height of the triangle
+     */
+    public function it_can_find_the_angle_between_secondary_hand_and_height_of_the_triangle()
+    {
+        //arrange
+        $this->calculator->setPrimaryHandLength(15);
+        $this->calculator->setSecondaryHandLength(15);
+        $this->calculator->setPoint(10.60660, 10.60660); // a point with a distance of 15cm from the origin
+    
+        //act
+        $angle = $this->calculator->getSecondaryToHeightAngle();
+    
+        //assert
+        $this->assertEquals(30, abs(round($angle)));
+    }
+
+    /**
+     * @test
+     * it can calculate the angle that the secondary hand needs to move
+     */
+    public function it_can_calculate_the_angle_that_the_secondary_hand_needs_to_move()
+    {
+        //arrange
+        $this->calculator->setPrimaryHandLength(15);
+        $this->calculator->setSecondaryHandLength(15);
+        $this->calculator->setPoint(10.60660, 10.60660); // a point with a distance of 15cm from the origin
+    
+        //act
+        $angle = $this->calculator->getSecondaryHandAngle();
+    
+        //assert
+        $this->assertEquals(30, abs(round($angle)));
+    }
 }
