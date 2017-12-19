@@ -45,7 +45,8 @@ class RotatePrimary extends Command
         $primaryHandMover = new PrimaryHandController;
         $angle = $this->argument('angle');
 
-        $steps_to_move =  abs(floor($angle / .087891));
+        $steps_to_move =  abs($angle / .087891);
+        $steps_to_move = floor($steps_to_move);
         $primaryHandMover->setStepsToMove($steps_to_move);
 
         if($this->option('cw')){

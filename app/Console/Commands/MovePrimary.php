@@ -43,8 +43,8 @@ class MovePrimary extends Command
         $calculator = new AngleCalculator();
         $settings = new Setting();
         
-        $calculator->setPrimaryHandLength(19);
-        $calculator->setSecondaryHandLength(13.5);
+        $calculator->setPrimaryHandLength(14.75);
+        $calculator->setSecondaryHandLength(15.5);
         $calculator->setPoint($this->argument('x'), $this->argument('y'));
 
         $target_angle = $calculator->getPrimaryHandAngle();
