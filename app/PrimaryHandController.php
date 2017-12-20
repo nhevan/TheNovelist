@@ -20,6 +20,29 @@ class PrimaryHandController extends HandController
 	}
 
 	/**
+	 * rotates the hand in desired direction
+	 * @return [type] [description]
+	 */
+	public function rotate($target_primary_angle)
+	{
+		$current_primary_hand_angle = $this->settings->getCurrentHandAngle('primary_hand');
+        $angle_to_rotate_primary_hand = $current_primary_hand_angle - $target_primary_angle;
+        $steps_to_move_primary_hand = $angle_to_rotate_primary_hand / .087891;
+        $steps_to_move_primary_hand = floor($steps_to_move_primary_hand);
+
+        echo "Current Primary Hand angle = {$current_primary_hand_angle}";
+        echo "Angle to rotate Primary Hand = {$angle_to_rotate_primary_hand}";
+        echo "Steps to move Primary Hand = {$steps_to_move_primary_hand}";
+
+        $this->setStepsToMove(abs($steps_to_move_primary_hand));
+        if ($angle_to_rotate_primary_hand > 0) {
+            $this->rotateClockwise();
+        }else{
+            $this->rotateAntiClockwise();
+        }
+	}
+
+	/**
 	 * rotates the motor clock wise
 	 * @return [type] [description]
 	 */
