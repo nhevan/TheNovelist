@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\PathTraverser;
 use App\AngleCalculator;
 use App\PrimaryHandController;
 use Illuminate\Console\Command;
@@ -43,12 +44,35 @@ class Move extends Command
         $secondaryHandMover = new SecondaryHandController;
         $primaryHandMover = new PrimaryHandController;
         $calculator = new AngleCalculator();
+        $path_traverser = new PathTraverser();
         
         $calculator->setPrimaryHandLength(15);
         $calculator->setSecondaryHandLength(10);
-        $calculator->setPoint($this->argument('x'), $this->argument('y'));
+        $path_traverser->setX1($calculator->getPrimaryHandLength());
+        $path_traverser->setY1($calculator->getSecondaryHandLength());
+        $path_traverser->setX2($this->argument('x'));
+        $path_traverser->setY2($this->argument('y'));
 
-        $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
-        $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
+        if ($this->argument('x') < $calculator->getPrimaryHandLength() ) { 
+            for ($x = 15; $x >= $this->argument('x') ; $x-=.02) { 
+                $y = $path_traverser->getYWhenX($x);
+                $calculator->setPoint($x, $y);
+                $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
+                $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
+            }
+        }
+        if ($this->argument('x') > $calculator->getPrimaryHandLength() ) { 
+            for ($x = 15; $x <= $this->argument('x') ; $x+=.02) { 
+                $y = $path_traverser->getYWhenX($x);
+                $calculator->setPoint($x, $y);
+                $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
+                $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
+            }
+        }
+
+        // $calculator->setPoint($this->argument('x'), $this->argument('y'));
+
+        // $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
+        // $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
     }
 }
