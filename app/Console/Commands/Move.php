@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Setting;
 use App\PathTraverser;
 use App\AngleCalculator;
 use App\PrimaryHandController;
@@ -45,34 +46,36 @@ class Move extends Command
         $primaryHandMover = new PrimaryHandController;
         $calculator = new AngleCalculator();
         $path_traverser = new PathTraverser();
+        $settings = new Setting;
+        $loop_increment_value = .06;
         
         $calculator->setPrimaryHandLength(15);
         $calculator->setSecondaryHandLength(10);
-        $path_traverser->setX1($calculator->getPrimaryHandLength());
-        $path_traverser->setY1($calculator->getSecondaryHandLength());
+
+        $path_traverser->setX1($settings->get('current_x'));
+        $path_traverser->setY1($settings->get('current_y'));
         $path_traverser->setX2($this->argument('x'));
         $path_traverser->setY2($this->argument('y'));
 
-        if ($this->argument('x') < $calculator->getPrimaryHandLength() ) { 
-            for ($x = 15; $x >= $this->argument('x') ; $x-=.02) { 
+        if ($this->argument('x') < $settings->get('current_x') ) { 
+            for ($x = $settings->get('current_x'); $x >= $this->argument('x') ; $x-=$loop_increment_value) { 
                 $y = $path_traverser->getYWhenX($x);
                 $calculator->setPoint($x, $y);
+                $settings->set('current_x', $x);
+                $settings->set('current_y', $y);
                 $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
                 $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
             }
         }
-        if ($this->argument('x') > $calculator->getPrimaryHandLength() ) { 
-            for ($x = 15; $x <= $this->argument('x') ; $x+=.02) { 
+        if ($this->argument('x') > $settings->get('current_x') ) { 
+            for ($x = $settings->get('current_x'); $x <= $this->argument('x') ; $x+=$loop_increment_value) { 
                 $y = $path_traverser->getYWhenX($x);
                 $calculator->setPoint($x, $y);
+                $settings->set('current_x', $x);
+                $settings->set('current_y', $y);
                 $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
                 $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
             }
         }
-
-        // $calculator->setPoint($this->argument('x'), $this->argument('y'));
-
-        // $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
-        // $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
     }
 }
