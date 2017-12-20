@@ -96,6 +96,9 @@ class PathTraverser
      */
     public function getSlope()
     {
+        if($this->X1 == $this->X2) return 0;
+        if($this->Y1 == $this->Y2) return 1;
+        
     	return ($this->Y2 - $this->Y1) / ($this->X2 - $this->X1);
     }
 
