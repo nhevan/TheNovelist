@@ -47,7 +47,7 @@ class Move extends Command
         $calculator = new AngleCalculator();
         $path_traverser = new PathTraverser();
         $settings = new Setting;
-        $loop_increment_value = .06;
+        $loop_increment_value = .02;
         
         $calculator->setPrimaryHandLength(15);
         $calculator->setSecondaryHandLength(10);
@@ -56,6 +56,30 @@ class Move extends Command
         $path_traverser->setY1($settings->get('current_y'));
         $path_traverser->setX2($this->argument('x'));
         $path_traverser->setY2($this->argument('y'));
+
+        if($this->argument('x') == $settings->get('current_x')){
+            if ($this->argument('y') > $settings->get('current_y')) {
+                for ($y = $settings->get('current_y'); $y <= $this->argument('y') ; $y+=$loop_increment_value) { 
+                    $calculator->setPoint($settings->get('current_x'), $y);
+                    $settings->set('current_y', round($y, 2));
+                    $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
+                    $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
+                }
+
+                return 0;
+            }
+
+            if ($this->argument('y') < $settings->get('current_y')) {
+                for ($y = $settings->get('current_y'); $y >= $this->argument('y') ; $y-=$loop_increment_value) { 
+                    $calculator->setPoint($settings->get('current_x'), $y);
+                    $settings->set('current_y', round($y, 2));
+                    $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
+                    $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
+                }
+
+                return 0;
+            }
+        }
 
         if ($this->argument('x') < $settings->get('current_x') ) { 
             for ($x = $settings->get('current_x'); $x >= $this->argument('x') ; $x-=$loop_increment_value) { 
@@ -66,6 +90,8 @@ class Move extends Command
                 $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
                 $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
             }
+
+            return 0;
         }
         if ($this->argument('x') > $settings->get('current_x') ) { 
             for ($x = $settings->get('current_x'); $x <= $this->argument('x') ; $x+=$loop_increment_value) { 
@@ -76,6 +102,8 @@ class Move extends Command
                 $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
                 $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
             }
+
+            return 0;
         }
     }
 }
