@@ -21,6 +21,8 @@ class SettingsTableSeeder extends Seeder
     {
         $this->newSettings('primary_hand_current_step_count', 0, 'This keeps tracks of all the steps traversed by the Primary Hand. Please not that one Anti-Clockwise step is a positive step.');
         $this->newSettings('secondary_hand_current_step_count', 0, 'This keeps tracks of all the steps traversed by the Secondary Hand.');
+        $this->newSettings('current_x', 0, 'Keeps the current x coordinate of the pen head.');
+        $this->newSettings('current_y', 0, 'Keeps the current y coordinate of the pen head.');
     }
 
     public function newSettings($key, $value, $description = null)
