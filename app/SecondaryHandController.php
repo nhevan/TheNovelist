@@ -28,9 +28,9 @@ class SecondaryHandController extends HandController
         $steps_to_move_secondary_hand = $angle_to_rotate_secondary_hand / .087891;
         $steps_to_move_secondary_hand = floor($steps_to_move_secondary_hand);
 
-        echo "Current Secondary Hand angle = {$current_secondary_hand_angle}";
-        echo "Angle to rotate Secondary Hand = {$angle_to_rotate_secondary_hand}";
-        echo "Steps to move Secondary Hand = {$steps_to_move_secondary_hand}";
+        echo "Current Secondary Hand angle = {$current_secondary_hand_angle} \r\n";
+        echo "Angle to rotate Secondary Hand = {$angle_to_rotate_secondary_hand} \r\n";
+        echo "Steps to move Secondary Hand = {$steps_to_move_secondary_hand} \r\n";
 
         $this->setStepsToMove(abs($steps_to_move_secondary_hand));
         if ($angle_to_rotate_secondary_hand > 0) {
