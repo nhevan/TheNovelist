@@ -2,29 +2,26 @@
 
 namespace App\Console\Commands;
 
-use App\Setting;
 use App\TheNovelist;
-use App\PathTraverser;
-use App\AngleCalculator;
-use App\PrimaryHandController;
 use Illuminate\Console\Command;
-use App\SecondaryHandController;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
-class Move extends Command
+class Draw extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'Move {x} {y}';
+    protected $signature = 'draw';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Moves the pen head to given coordinates.';
+    protected $description = 'Draws through a given set of coordinates by readind a local text file.';
 
     /**
      * Create a new command instance.
@@ -45,6 +42,13 @@ class Move extends Command
     {
         $novelist = new TheNovelist;
 
-        $novelist->goto($this->argument('x'), $this->argument('y'));
+        $file_handle = fopen('storage/input_file_for_draw_command.txt', "r");
+        while (!feof($file_handle)) {
+           $line = fgets($file_handle);
+           $x = explode(' ', $line)[0];
+           $y = trim(explode(' ', $line)[1]);
+           $novelist->goto($x, $y);
+        }
+        fclose($file_handle);
     }
 }
