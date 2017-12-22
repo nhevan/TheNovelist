@@ -118,11 +118,14 @@ abstract class HandController
 	{
 		$this->turnOnMotor();
 		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
-			$this->moveStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
-			$this->current_phase -= 1;
-			if($this->current_phase < 0)
-				$this->current_phase = 7;
-			usleep($this->delay);
+			for ($local_step_count=0; $local_step_count <= $this->step_count ; $local_step_count++) { 
+				$this->moveStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
+				
+				$this->current_phase -= 1;
+				if($this->current_phase < 0)
+					$this->current_phase = 7;
+				usleep($this->delay);
+			}
 		}
 		$this->turnOffMotor();
 	}
@@ -135,11 +138,13 @@ abstract class HandController
 	{
 		$this->turnOnMotor();
 		for ($step=0; $step < $this->getStepsToMove(); $step++) { 
-			$this->moveStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
-			$this->current_phase += 1;
-			if($this->current_phase > 7)
-				$this->current_phase = 0;
-			usleep($this->delay);
+			for ($local_step_count=0; $local_step_count <= $this->step_count ; $local_step_count++) { 
+				$this->moveStep($this->phase_sequence[$this->current_phase][0], $this->phase_sequence[$this->current_phase][1], $this->phase_sequence[$this->current_phase][2], $this->phase_sequence[$this->current_phase][3]);
+				$this->current_phase += 1;
+				if($this->current_phase > 7)
+					$this->current_phase = 0;
+				usleep($this->delay);
+			}
 		}
 		$this->turnOffMotor();
 	}
