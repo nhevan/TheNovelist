@@ -59,7 +59,7 @@ class Move extends Command
 
         if($this->argument('x') == $settings->get('current_x')){
             if ($this->argument('y') > $settings->get('current_y')) {
-                for ($y = $settings->get('current_y'); $y <= $this->argument('y') ; $y+=$loop_increment_value) { 
+                for ($y = $settings->get('current_y')+$loop_increment_value; $y <= $this->argument('y') ; $y+=$loop_increment_value) { 
                     $calculator->setPoint($settings->get('current_x'), $y);
                     echo round($y, 2).'-';
                     $settings->set('current_y', round($y, 2));
@@ -71,7 +71,7 @@ class Move extends Command
             }
 
             if ($this->argument('y') < $settings->get('current_y')) {
-                for ($y = $settings->get('current_y'); $y >= $this->argument('y') ; $y-=$loop_increment_value) { 
+                for ($y = $settings->get('current_y')+$loop_increment_value; $y >= $this->argument('y') ; $y-=$loop_increment_value) { 
                     $calculator->setPoint($settings->get('current_x'), $y);
                     echo round($y, 2).'-';
                     $settings->set('current_y', round($y, 2));
