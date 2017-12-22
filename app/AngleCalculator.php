@@ -134,6 +134,9 @@ class AngleCalculator
     {
     	$p = $this->y;
     	$b = $this->x;
+        if ($b == 0) {
+            return 0;
+        }
     	$ratio = $p / $b;
     	
     	return rad2deg(atan($ratio));
