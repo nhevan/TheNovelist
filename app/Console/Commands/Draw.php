@@ -14,7 +14,7 @@ class Draw extends Command
      *
      * @var string
      */
-    protected $signature = 'draw';
+    protected $signature = 'draw {file}';
 
     /**
      * The console command description.
@@ -42,11 +42,12 @@ class Draw extends Command
     {
         $novelist = new TheNovelist;
 
-        $file_handle = fopen('storage/input_file_for_draw_command.txt', "r");
+        $file_handle = fopen('storage/'.$this->argument('file'), "r");
         while (!feof($file_handle)) {
            $line = fgets($file_handle);
            $x = explode(' ', $line)[0];
            $y = trim(explode(' ', $line)[1]);
+
            $novelist->goto($x, $y);
         }
         fclose($file_handle);
