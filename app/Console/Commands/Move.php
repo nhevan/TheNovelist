@@ -97,8 +97,8 @@ class Move extends Command
             for ($x = $settings->get('current_x'); $x <= $this->argument('x') ; $x+=$loop_increment_value) { 
                 $y = $path_traverser->getYWhenX($x);
                 $calculator->setPoint($x, $y);
-                $settings->set('current_x', $x);
-                $settings->set('current_y', $y);
+                $settings->set('current_x', round($x, 2));
+                $settings->set('current_y', round($y, 2));
                 $primaryHandMover->rotate($calculator->getPrimaryHandAngle());
                 $secondaryHandMover->rotate($calculator->getSecondaryHandAngle());
             }
