@@ -8,13 +8,13 @@ class AngleCalculator
 	 * the length of the primary hand in cm
 	 * @var [type]
 	 */
-	protected $primary_hand_length;
+	protected $primary_hand_length = 15;
 
 	/**
 	 * the length of the secondary hand in cm
 	 * @var [type]
 	 */
-	protected $secondary_hand_length;
+	protected $secondary_hand_length = 10;
 
 	/**
 	 * the x coordinate of the target point
@@ -134,6 +134,9 @@ class AngleCalculator
     {
     	$p = $this->y;
     	$b = $this->x;
+        if ($b == 0) {
+            return 0;
+        }
     	$ratio = $p / $b;
     	
     	return rad2deg(atan($ratio));

@@ -30,9 +30,9 @@ class PrimaryHandController extends HandController
         $steps_to_move_primary_hand = $angle_to_rotate_primary_hand / .087891;
         $steps_to_move_primary_hand = floor($steps_to_move_primary_hand);
 
-        echo "Current Primary Hand angle = {$current_primary_hand_angle}";
-        echo "Angle to rotate Primary Hand = {$angle_to_rotate_primary_hand}";
-        echo "Steps to move Primary Hand = {$steps_to_move_primary_hand}";
+        echo "Current Primary Hand angle = {$current_primary_hand_angle} \r\n";
+        echo "Angle to rotate Primary Hand = {$angle_to_rotate_primary_hand} \r\n";
+        echo "Steps to move Primary Hand = {$steps_to_move_primary_hand} \r\n";
 
         $this->setStepsToMove(abs($steps_to_move_primary_hand));
         if ($angle_to_rotate_primary_hand > 0) {

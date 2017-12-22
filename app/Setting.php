@@ -6,6 +6,32 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+
+    /**
+     * sets the value for the given key
+     * @param [type] $key   [description]
+     * @param [type] $value [description]
+     */
+    public function set($key, $value)
+    {
+        $key = $this->where('key', $key)->first();
+        $key->value = $value;
+
+        $key->save();
+    }
+
+    /**
+     * returns the value of the given key
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    public function get($key)
+    {
+        $key = $this->where('key', $key)->first();
+
+        return $key->value;
+    }
+
 	/**
 	 * tracks the position of the given hand in steps count
 	 * @param  [type] $hand           [description]

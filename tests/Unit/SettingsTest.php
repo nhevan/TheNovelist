@@ -73,4 +73,36 @@ class SettingsTest extends TestCase
 	    //assert
 	    $this->assertEquals(45, round($current_primary_hand_angle));
 	}
+
+	/**
+	 * @test
+	 * it can set any value when key is given
+	 */
+	public function it_can_set_any_value_when_key_is_given()
+	{
+	    //act
+	    $this->settings->set('current_x', 20);
+			
+	    //assert
+	    $this->assertDatabaseHas('settings', [
+	    	'key' => 'current_x',
+	    	'value' => 20
+    	]);
+	}
+
+	/**
+	 * @test
+	 * it can get any value when key is given
+	 */
+	public function it_can_get_any_value_when_key_is_given()
+	{
+		//arrange
+	    $this->settings->set('current_y', 20);
+
+	    //act
+		$y = $this->settings->get('current_y');
+		
+	    //assert
+	    $this->assertEquals(20, $y);
+	}
 }
