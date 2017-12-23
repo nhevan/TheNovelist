@@ -14,7 +14,7 @@ class Draw extends Command
      *
      * @var string
      */
-    protected $signature = 'draw {file}';
+    protected $signature = 'draw {file} {loop=1}';
 
     /**
      * The console command description.
@@ -40,8 +40,16 @@ class Draw extends Command
      */
     public function handle()
     {
+        for ($i=0; $i < $this->argument('loop'); $i++) { 
+            $this->write();
+        }
+    }
+
+    public function write($value='')
+    {
         $novelist = new TheNovelist;
         $pixel_width = .02;
+
         $file_handle = fopen('storage/'.$this->argument('file'), "r");
         while (!feof($file_handle)) {
            $line = fgets($file_handle);
