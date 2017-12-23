@@ -29,7 +29,7 @@ abstract class HandController
 		$this->settings = new Setting;
 		$this->phase_sequence = $this->setPhaseSequences();
 		$this->setupPins();
-
+		$this->step_count = $this->settings->get('step_count');
 		$this->zoom_value = 1;
 	}
 
