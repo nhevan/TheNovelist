@@ -23,6 +23,8 @@ class SettingsTableSeeder extends Seeder
         $this->newSettings('secondary_hand_current_step_count', 0, 'This keeps tracks of all the steps traversed by the Secondary Hand.');
         $this->newSettings('current_x', 0, 'Keeps the current x coordinate of the pen head.');
         $this->newSettings('current_y', 0, 'Keeps the current y coordinate of the pen head.');
+        $this->newSettings('step_count', 1, 'Motor step count per phase');
+        $this->newSettings('min_angle', .087891, 'Motor step count per phase');
     }
 
     public function newSettings($key, $value, $description = null)

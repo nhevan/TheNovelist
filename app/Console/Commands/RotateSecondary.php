@@ -45,7 +45,7 @@ class RotateSecondary extends Command
         $secondaryHandMover = new SecondaryHandController;
         $angle = $this->argument('angle');
 
-        $steps_to_move =  abs($angle / .087891);
+        $steps_to_move =  abs($angle / ($this->settings->get('step_count') * $this->settings->get('min_angle')));
         $steps_to_move = floor($steps_to_move);
         $secondaryHandMover->setStepsToMove($steps_to_move);
 
