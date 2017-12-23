@@ -18,7 +18,7 @@ class TheNovelist
         $calculator = new AngleCalculator();
         $path_traverser = new PathTraverser();
         $settings = new Setting;
-        $loop_increment_value = .02;
+        $loop_increment_value = .01;
         
         $calculator->setPrimaryHandLength(15);
         $calculator->setSecondaryHandLength(10);

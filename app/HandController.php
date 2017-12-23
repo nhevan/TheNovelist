@@ -20,7 +20,7 @@ abstract class HandController
 	protected $current_phase = 0;
 	protected $step_count = 1;
 	protected $steps_to_move;
-	protected $delay = 1000; //in micro second
+	protected $delay = 5000; //in micro second
 	protected $phase_sequence;
 
 	public function __construct()
