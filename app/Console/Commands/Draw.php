@@ -47,8 +47,8 @@ class Draw extends Command
            $line = fgets($file_handle);
            $x = explode(' ', $line)[0];
            $y = trim(explode(' ', $line)[1]);
-           $x = $x / $pixel_width;
-           $y = $y / $pixel_width;
+           $x = $x * $pixel_width;
+           $y = $y * $pixel_width;
 
            echo "X: {$x}; Y: {$y} \r\n";
            $novelist->goto($x, $y);
