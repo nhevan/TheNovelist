@@ -8,6 +8,7 @@ use PiPHP\GPIO\Pin\PinInterface;
 
 abstract class HandController
 {
+	public $zoom;
 	protected $gpio;
 	protected $settings;
 	protected $motor_switch;
@@ -28,6 +29,8 @@ abstract class HandController
 		$this->settings = new Setting;
 		$this->phase_sequence = $this->setPhaseSequences();
 		$this->setupPins();
+
+		$this->zoom = 1;
 	}
 
 	/**
