@@ -27,7 +27,7 @@ class PrimaryHandController extends HandController
 	{
 		$current_primary_hand_angle = $this->settings->getCurrentHandAngle('primary_hand');
         $angle_to_rotate_primary_hand = $current_primary_hand_angle - $target_primary_angle;
-        $steps_to_move_primary_hand = $angle_to_rotate_primary_hand / .087891;
+        $steps_to_move_primary_hand = $angle_to_rotate_primary_hand / ($this->settings->get('step_count') * $this->settings->get('min_angle'));
         $steps_to_move_primary_hand = ceil($steps_to_move_primary_hand);
         $steps_to_move_primary_hand = $steps_to_move_primary_hand * $this->zoom_value;
 
