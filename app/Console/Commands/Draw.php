@@ -41,13 +41,16 @@ class Draw extends Command
     public function handle()
     {
         $novelist = new TheNovelist;
-
+        $pixel_width = .02;
         $file_handle = fopen('storage/'.$this->argument('file'), "r");
         while (!feof($file_handle)) {
            $line = fgets($file_handle);
            $x = explode(' ', $line)[0];
            $y = trim(explode(' ', $line)[1]);
+           $x = $x / $pixel_width;
+           $y = $y / $pixel_width;
 
+           echo "X: {$x}; Y: {$y} \r\n";
            $novelist->goto($x, $y);
         }
         fclose($file_handle);
