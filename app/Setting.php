@@ -14,6 +14,7 @@ class Setting extends Model
      */
     public function set($key, $value)
     {
+        echo $key.' : '.$value."\r\n";
         $key = $this->where('key', $key)->first();
         $key->value = $value;
 
