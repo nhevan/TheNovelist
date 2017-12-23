@@ -14,7 +14,7 @@ class Draw extends Command
      *
      * @var string
      */
-    protected $signature = 'draw {file} {loop=1}';
+    protected $signature = 'draw {file} {loop=1} {--map}';
 
     /**
      * The console command description.
@@ -55,6 +55,10 @@ class Draw extends Command
            $line = fgets($file_handle);
            $x = explode(' ', $line)[0];
            $y = trim(explode(' ', $line)[1]);
+           if($this->option('map')){
+                $x += 250;
+                $y += 600;
+           }
            $x = $x * $pixel_width;
            $y = $y * $pixel_width;
 
