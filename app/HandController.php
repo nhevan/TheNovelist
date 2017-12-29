@@ -23,9 +23,9 @@ abstract class HandController
 	protected $delay = 5000; //in micro second
 	protected $phase_sequence;
 
-	public function __construct()
+	public function __construct($gpio = null)
 	{
-		$this->gpio = new GPIO();
+		$this->gpio = $gpio ? $gpio : new GPIO;
 		$this->settings = new Setting;
 		$this->phase_sequence = $this->setPhaseSequences();
 		$this->setupPins();
