@@ -14,6 +14,7 @@ class Setting extends Model
      */
     public function set($key, $value)
     {
+        echo $key.' : '.$value."\r\n";
         $key = $this->where('key', $key)->first();
         $key->value = $value;
 
@@ -68,6 +69,6 @@ class Setting extends Model
     {
         $hand = $this->where('key', $hand.'_current_step_count')->first();
 
-        return $hand->value * .087891;
+        return $hand->value * ($this->get('step_count') * $this->get('min_angle'));
     }
 }

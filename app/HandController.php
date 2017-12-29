@@ -8,6 +8,7 @@ use PiPHP\GPIO\Pin\PinInterface;
 
 abstract class HandController
 {
+	public $zoom_value;
 	protected $gpio;
 	protected $settings;
 	protected $motor_switch;
@@ -19,15 +20,17 @@ abstract class HandController
 	protected $current_phase = 0;
 	protected $step_count = 1;
 	protected $steps_to_move;
-	protected $delay = 8000; //in micro second
+	protected $delay = 5000; //in micro second
 	protected $phase_sequence;
 
-	public function __construct()
+	public function __construct($gpio = null)
 	{
-		$this->gpio = new GPIO();
+		$this->gpio = $gpio ? $gpio : new GPIO;
 		$this->settings = new Setting;
 		$this->phase_sequence = $this->setPhaseSequences();
 		$this->setupPins();
+		$this->step_count = $this->settings->get('step_count');
+		$this->zoom_value = 1;
 	}
 
 	/**
