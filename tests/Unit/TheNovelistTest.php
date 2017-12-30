@@ -40,7 +40,7 @@ class TheNovelistTest extends TestCase
 	    $novelist->settings->set('current_x', 10);
 	    $novelist->settings->set('current_y', 10);
 
-	    $novelist->goto(10, 10.02, true);
+	    $novelist->goto(10, 10.02, 1);
 	}
 
 	/**
