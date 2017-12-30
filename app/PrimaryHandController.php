@@ -25,10 +25,11 @@ class PrimaryHandController extends HandController
 	 */
 	public function rotate($target_primary_angle)
 	{
+        echo "\r\n================Move Primary=================\r\n";
 		$current_primary_hand_angle = $this->settings->getCurrentHandAngle('primary_hand');
         $angle_to_rotate_primary_hand = $current_primary_hand_angle - $target_primary_angle;
         $steps_to_move_primary_hand = $angle_to_rotate_primary_hand / ($this->settings->get('step_count') * $this->settings->get('min_angle'));
-        $steps_to_move_primary_hand = ceil($steps_to_move_primary_hand);
+        $steps_to_move_primary_hand = round(abs($steps_to_move_primary_hand));
         $steps_to_move_primary_hand = $steps_to_move_primary_hand * $this->zoom_value;
 
         echo "Current Primary Hand angle = {$current_primary_hand_angle} \r\n";
@@ -38,9 +39,12 @@ class PrimaryHandController extends HandController
         $this->setStepsToMove(abs($steps_to_move_primary_hand));
         if ($angle_to_rotate_primary_hand > 0) {
             $this->rotateClockwise();
+            echo "Rotation direction : Clockwise \r\n";
         }else{
             $this->rotateAntiClockwise();
+            echo "Rotation direction : Anti Clockwise \r\n";
         }
+        echo "=============================================\r\n";
 	}
 
 	/**

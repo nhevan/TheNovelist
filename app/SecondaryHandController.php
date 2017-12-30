@@ -23,10 +23,12 @@ class SecondaryHandController extends HandController
 	 */
 	public function rotate($target_secondary_angle)
 	{
+        echo "\r\n===============Move Secondary================\r\n";
 		$current_secondary_hand_angle = $this->settings->getCurrentHandAngle('secondary_hand');
         $angle_to_rotate_secondary_hand = $current_secondary_hand_angle - $target_secondary_angle;
         $steps_to_move_secondary_hand = $angle_to_rotate_secondary_hand / ($this->settings->get('step_count') * $this->settings->get('min_angle'));
-        $steps_to_move_secondary_hand = ceil($steps_to_move_secondary_hand);
+
+        $steps_to_move_secondary_hand = ceil(abs($steps_to_move_secondary_hand));
         $steps_to_move_secondary_hand = $steps_to_move_secondary_hand * $this->zoom_value;
 
         echo "Current Secondary Hand angle = {$current_secondary_hand_angle} \r\n";
@@ -36,9 +38,12 @@ class SecondaryHandController extends HandController
         $this->setStepsToMove(abs($steps_to_move_secondary_hand));
         if ($angle_to_rotate_secondary_hand > 0) {
             $this->rotateAntiClockwise();
+            echo "Rotation direction : Anti Clockwise \r\n";
         }else{
             $this->rotateClockwise();
+            echo "Rotation direction : Clockwise \r\n";
         }
+        echo "=============================================\r\n";
 	}
 
 	/**
