@@ -148,7 +148,7 @@ class AngleCalculator
      */
     public function getPrimaryHandAngle()
     {
-    	return $this->getTargetToXAxisAngle() - $this->getTargetToPrimaryAngle();
+    	return round($this->getTargetToXAxisAngle() - $this->getTargetToPrimaryAngle(), 6);
     }
 
     /**
@@ -179,6 +179,6 @@ class AngleCalculator
      */
     public function getSecondaryHandAngle()
     {
-        return $this->getPrimaryToHeightAngle() + $this->getSecondaryToHeightAngle() - 90;
+        return round($this->getPrimaryToHeightAngle() + $this->getSecondaryToHeightAngle() - 90, 6);
     }
 }

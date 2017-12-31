@@ -14,7 +14,7 @@ class TheNovelist
     protected $secondaryHandMover;
     protected $primaryHandMover;
     public $settings;
-    protected $calculator;
+    public $calculator;
     protected $path_traverser;
     protected $loop_increment_value;
     private $target_x;
@@ -58,39 +58,81 @@ class TheNovelist
 
         if($this->isVerticalLine()){
             if ($this->shouldDrawUpward()) {
-                $response = $this->drawUpward();
+                $this->drawUpward();
 
-                return $response;
+                return $this->info();
             }
 
             if ($this->shouldDrawDownward()) {
-                $response = $this->drawDownward();
+                $this->drawDownward();
 
-                return response;
+                return $this->info();
             }
         }
 
-        if ($x_cord < $this->settings->get('current_x') ) { 
-            for ($x = $this->settings->get('current_x'); $x >= $x_cord ; $x-=$this->loop_increment_value) { 
-                $y = $this->path_traverser->getYWhenX($x);
-                $this->calculator->setPoint($x, $y);
-                $this->settings->set('current_x', round($x, 2));
-                $this->settings->set('current_y', round($y, 2));
-                $this->moveHands();
-            }
+        if ($this->shouldDrawLeftward() ) { 
+            $this->drawLeftward();
 
-            return 0;
+            return $this->info();
         }
-        if ($x_cord > $this->settings->get('current_x') ) {
-            for ($x = $this->settings->get('current_x')+$this->loop_increment_value; $x <= $x_cord ; $x+=$this->loop_increment_value) { 
-                $y = $this->path_traverser->getYWhenX($x);
-                $this->calculator->setPoint($x, $y);
-                $this->settings->set('current_x', round($x, 2));
-                $this->settings->set('current_y', round($y, 2));
-                $this->moveHands();
-            }
+        if ($this->shouldDrawRightward() ) {
+            $this->drawRightward();
 
-            return 0;
+            return $this->info();
+        }
+    }
+
+    /**
+     * determines if the pen head should move/draw rightward
+     * @return [type] [description]
+     */
+    private function shouldDrawRightward()
+    {
+        return $this->target_x > $this->settings->get('current_x');
+    }
+
+    /**
+     * draws rightward but not necessarily in a straight line
+     * @return [type] [description]
+     */
+    private function drawRightward()
+    {
+        for ($x = $this->settings->get('current_x')+$this->loop_increment_value; $x <= $this->target_x ; $x+=$this->loop_increment_value) {
+            $y = $this->path_traverser->getYWhenX($x);
+            $this->calculator->setPoint($x, $y);
+            $this->settings->set('current_x', round($x, 2));
+            $this->settings->set('current_y', round($y, 2));
+            $this->moveHands();
+        }
+    }
+
+    /**
+     * determines if the pen head should move/draw leftwards
+     * @return [type] [description]
+     */
+    private function shouldDrawLeftward()
+    {
+        return $this->target_x < $this->settings->get('current_x');
+    }
+
+    /**
+     * draws leftward but not necessarily in a straight line
+     * @return [type] [description]
+     */
+    private function drawLeftward()
+    {
+        if ($this->verbose) {
+            $this->printPreRotationMessages("Drawing Leftward");
+        }
+        for ($x = $this->settings->get('current_x')+$this->loop_increment_value; $x >= $this->target_x ; $x-=$this->loop_increment_value) { 
+            $y = $this->path_traverser->getYWhenX($x);
+            $this->calculator->setPoint($x, $y);
+            $this->settings->set('current_x', round($x, 2));
+            $this->settings->set('current_y', round($y, 2));
+            $this->moveHands();
+        }
+        if ($this->verbose) {
+            $this->printPostRotationMessages();
         }
     }
 
@@ -170,6 +212,9 @@ class TheNovelist
         echo "\r\nCurrent Y : {$current_y}";
         echo "\r\nTarget X : {$this->target_x}";
         echo "\r\nTarget Y : {$this->target_y}";
+        $distance_to_move_in_cm = sqrt((($this->target_x - $current_x)*($this->target_x - $current_x)) + (($this->target_y - $current_y)*($this->target_y - $current_y)));
+        $distance_to_move_in_mm = $distance_to_move_in_cm * 10;
+        echo "\r\nDistance from current pen head to target point : {$distance_to_move_in_mm} mm ({$distance_to_move_in_cm} cm)";
         echo "\r\n=============================================\r\n";
     }
 
@@ -206,5 +251,30 @@ class TheNovelist
 
         $this->secondary_hand_total_steps_moved += $secondary_vector[0];
         $this->secondary_hand_rotation_direction = $secondary_vector[1];
+    }
+
+    /**
+     * resets the step count and rotation direction for both primary and secondary hand
+     * @return [type] [description]
+     */
+    public function resetHandMovementInfo()
+    {
+        $this->primary_hand_total_steps_moved = 0;
+        $this->primary_hand_rotation_direction = 'unknown';
+
+        $this->secondary_hand_total_steps_moved = 0;
+        $this->secondary_hand_rotation_direction = 'unknown';
+    }
+
+    /**
+     * returns the info on the steps moved and rotation direction of both primary and secondary hand
+     * @return [type] [description]
+     */
+    public function info()
+    {
+        return [
+            'primary_hand' => [$this->primary_hand_total_steps_moved, $this->primary_hand_rotation_direction],
+            'secondary_hand' => [$this->secondary_hand_total_steps_moved, $this->secondary_hand_rotation_direction]
+        ];
     }
 }

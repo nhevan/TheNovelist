@@ -23,32 +23,33 @@ class PrimaryHandController extends HandController
 	 * rotates the hand in desired direction
 	 * @return [type] [description]
 	 */
-	public function rotate($target_primary_angle, $verbose = false)
+	public function rotate($target_primary_angle, $verbose = 0)
 	{
-        if($verbose) echo "\r\n================Move Primary=================\r\n";
+        if($verbose > 0) echo "\r\n================Move Primary=================\r\n";
 		$current_primary_hand_angle = $this->settings->getCurrentHandAngle('primary_hand');
         $angle_to_rotate_primary_hand = $current_primary_hand_angle - $target_primary_angle;
+        $angle_to_rotate_primary_hand = round($angle_to_rotate_primary_hand, 6);
         $steps_to_move_primary_hand = $angle_to_rotate_primary_hand / ($this->settings->get('step_count') * $this->settings->get('min_angle'));
         $steps_to_move_primary_hand = round(abs($steps_to_move_primary_hand));
         $steps_to_move_primary_hand = $steps_to_move_primary_hand * $this->zoom_value;
 
-        if($verbose) echo "Current Primary Hand angle = {$current_primary_hand_angle} \r\n";
-        if($verbose) echo "Angle to rotate Primary Hand = {$angle_to_rotate_primary_hand} \r\n";
-        if($verbose) echo "Steps to move Primary Hand = {$steps_to_move_primary_hand} \r\n";
+        if($verbose > 0) echo "Current Primary Hand angle = {$current_primary_hand_angle} \r\n";
+        if($verbose > 0) echo "Angle to rotate Primary Hand = {$angle_to_rotate_primary_hand} \r\n";
+        if($verbose > 0) echo "Steps to move Primary Hand = {$steps_to_move_primary_hand} \r\n";
 
         $this->setStepsToMove(abs($steps_to_move_primary_hand));
         if ($angle_to_rotate_primary_hand > 0) {
             $this->rotateClockwise();
-            if($verbose) echo "Rotation direction : Clockwise \r\n";
+            if($verbose > 0) echo "Rotation direction : Clockwise \r\n";
 
             return [$steps_to_move_primary_hand, 'Clockwise'];
         }else{
             $this->rotateAntiClockwise();
-            if($verbose) echo "Rotation direction : Anti Clockwise \r\n";
+            if($verbose > 0) echo "Rotation direction : Anti Clockwise \r\n";
 
             return [$steps_to_move_primary_hand, 'Anti Clockwise'];
         }
-        if($verbose) echo "=============================================\r\n";
+        if($verbose > 0) echo "=============================================\r\n";
 	}
 
 	/**
