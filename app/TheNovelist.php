@@ -25,15 +25,15 @@ class TheNovelist
     private $secondary_hand_total_steps_moved = 0;
     private $secondary_hand_rotation_direction;
 
-    public function __construct($secondaryHandMover = null, $primaryHandMover = null, $settings = null, $calculator = null, $path_traverser = null, $loop_increment_value = .02)
+    public function __construct($secondaryHandMover = null, $primaryHandMover = null, $settings = null, $calculator = null, $path_traverser = null, $loop_increment_value = .005)
     {
         $this->primaryHandMover = $primaryHandMover ?: new PrimaryHandController;
         $this->secondaryHandMover = $secondaryHandMover ?: new SecondaryHandController;
         $this->settings = $settings ?: new Setting;
         
         $this->calculator = $calculator ?: new AngleCalculator;
-        $this->calculator->setPrimaryHandLength(10);
-        $this->calculator->setSecondaryHandLength(10);
+        $this->calculator->setPrimaryHandLength(15);
+        $this->calculator->setSecondaryHandLength(11);
 
         $this->path_traverser = $path_traverser ?: new PathTraverser;
         $this->loop_increment_value = $loop_increment_value;
@@ -53,8 +53,10 @@ class TheNovelist
 
         $this->path_traverser->setX1($this->settings->get('current_x'));
         $this->path_traverser->setY1($this->settings->get('current_y'));
-        $this->path_traverser->setX2($x_cord);
-        $this->path_traverser->setY2($y_cord);
+
+        // dd($this->settings->get('current_y'));
+        $this->path_traverser->setX2($this->target_x);
+        $this->path_traverser->setY2($this->target_y);
 
         if($this->isVerticalLine()){
             if ($this->shouldDrawUpward()) {
@@ -97,12 +99,18 @@ class TheNovelist
      */
     private function drawRightward()
     {
+        if ($this->verbose) {
+            $this->printPreRotationMessages("Drawing Rightward");
+        }
         for ($x = $this->settings->get('current_x')+$this->loop_increment_value; $x <= $this->target_x ; $x+=$this->loop_increment_value) {
             $y = $this->path_traverser->getYWhenX($x);
             $this->calculator->setPoint($x, $y);
             $this->settings->set('current_x', round($x, 2));
             $this->settings->set('current_y', round($y, 2));
             $this->moveHands();
+        }
+        if ($this->verbose) {
+            $this->printPostRotationMessages();
         }
     }
 
@@ -124,12 +132,13 @@ class TheNovelist
         if ($this->verbose) {
             $this->printPreRotationMessages("Drawing Leftward");
         }
-        for ($x = $this->settings->get('current_x')+$this->loop_increment_value; $x >= $this->target_x ; $x-=$this->loop_increment_value) { 
+        for ($x = $this->settings->get('current_x')-$this->loop_increment_value; $x >= $this->target_x ; $x-=$this->loop_increment_value) { 
             $y = $this->path_traverser->getYWhenX($x);
             $this->calculator->setPoint($x, $y);
             $this->settings->set('current_x', round($x, 2));
             $this->settings->set('current_y', round($y, 2));
-            $this->moveHands();
+            $feedback = $this->moveHands();
+            echo "({$x}, {$y}) PH:{$feedback['ph']['steps']} {$feedback['ph']['direction']} steps SH:{$feedback['sh']['steps']} {$feedback['sh']['direction']} steps \r\n";
         }
         if ($this->verbose) {
             $this->printPostRotationMessages();
@@ -243,14 +252,27 @@ class TheNovelist
      */
     private function moveHands()
     {
+        // echo($this->secondary_hand_total_steps_moved."\r\n");
         $primary_vector = $this->primaryHandMover->rotate($this->calculator->getPrimaryHandAngle(), $this->verbose - 1);
         $secondary_vector = $this->secondaryHandMover->rotate($this->calculator->getSecondaryHandAngle(), $this->verbose - 1);
 
         $this->primary_hand_total_steps_moved += $primary_vector[0];
         $this->primary_hand_rotation_direction = $primary_vector[1];
 
+        
         $this->secondary_hand_total_steps_moved += $secondary_vector[0];
         $this->secondary_hand_rotation_direction = $secondary_vector[1];
+
+        return [
+            'ph' => [
+                'steps' => $primary_vector[0],
+                'direction' => $primary_vector[1]
+            ],
+            'sh' => [
+                'steps' => $secondary_vector[0],
+                'direction' => $secondary_vector[1]
+            ]
+        ];
     }
 
     /**
