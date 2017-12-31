@@ -26,14 +26,15 @@ class SecondaryHandController extends HandController
         if($verbose > 0) echo "\r\n===============Move Secondary================\r\n";
 		$current_secondary_hand_angle = $this->settings->getCurrentHandAngle('secondary_hand');
         $angle_to_rotate_secondary_hand = $current_secondary_hand_angle - $target_secondary_angle;
-        $angle_to_rotate_secondary_hand = round($angle_to_rotate_secondary_hand, 6);
-        $steps_to_move_secondary_hand = $angle_to_rotate_secondary_hand / ($this->settings->get('step_count') * $this->settings->get('min_angle'));
-
-        $steps_to_move_secondary_hand = round(abs($steps_to_move_secondary_hand));
+        $angle_to_rotate_secondary_hand = $angle_to_rotate_secondary_hand;
+        $steps_to_move_secondary_hand_original = $angle_to_rotate_secondary_hand / ($this->settings->get('step_count') * $this->settings->get('min_angle'));
+        $steps_to_move_secondary_hand_original = abs($steps_to_move_secondary_hand_original);
+        $steps_to_move_secondary_hand = round($steps_to_move_secondary_hand_original);
         $steps_to_move_secondary_hand = $steps_to_move_secondary_hand * $this->zoom_value;
 
         if($verbose > 0) echo "Current Secondary Hand angle = {$current_secondary_hand_angle} \r\n";
         if($verbose > 0) echo "Angle to rotate Secondary Hand = {$angle_to_rotate_secondary_hand} \r\n";
+        if($verbose > 0) echo "Original Steps to move Secondary Hand = {$steps_to_move_secondary_hand_original} \r\n";
         if($verbose > 0) echo "Steps to move Secondary Hand = {$steps_to_move_secondary_hand} \r\n";
 
         $this->setStepsToMove(abs($steps_to_move_secondary_hand));
